@@ -1,0 +1,7 @@
+[core]
+    remote = origin
+['remote "origin"']
+    url = https://dagshub.com/YazPei/examen-dvc.dvc
+    auth = basic
+    user = YazPei
+    password = 37a00c3747b486caf437145ca05e99e630db6318
