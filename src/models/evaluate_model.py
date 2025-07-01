@@ -17,7 +17,10 @@ def evaluate_model(input_features, input_target, input_model, output_predictions
     # Chargement des données
     X_test = pd.read_csv(input_features)
     y_test = pd.read_csv(input_target).squeeze()
-    model = pickle.load(input_model)
+
+    # Chargement du modèle
+    with open(input_model, "rb") as f:
+        model = pickle.load(f)
 
     # Prédictions
     y_pred = model.predict(X_test)
@@ -39,8 +42,10 @@ def evaluate_model(input_features, input_target, input_model, output_predictions
     with open(output_metrics, "w") as f:
         json.dump(scores, f, indent=4)
 
-    click.secho(f"Prédictions : {output_predictions}")
-    click.secho(f"Scores     : {output_metrics}")
+    click.secho(f"Prédictions sauvegardées dans : {output_predictions}")
+    click.secho(f"Scores sauvegardés dans : {output_metrics}")
+    click.secho(f"R² = {scores['r2_score']:.4f} | MSE = {scores['mse']:.4f}")
 
 if __name__ == "__main__":
     evaluate_model()
+
