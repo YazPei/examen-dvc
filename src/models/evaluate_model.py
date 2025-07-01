@@ -1,5 +1,5 @@
 import pandas as pd
-import joblib
+import pickle
 import json
 import os
 import click
@@ -8,7 +8,7 @@ from sklearn.metrics import r2_score, mean_squared_error
 @click.command()
 @click.option('--input_features', prompt="Chemin vers X_test_scaled.csv")
 @click.option('--input_target', prompt="Chemin vers y_test.csv")
-@click.option('--input_model', prompt="Chemin vers model.joblib")
+@click.option('--input_model', prompt="Chemin vers model.pkl")
 @click.option('--output_predictions', prompt="Chemin vers predictions.csv")
 @click.option('--output_metrics', prompt="Chemin vers scores.json")
 def evaluate_model(input_features, input_target, input_model, output_predictions, output_metrics):
@@ -17,7 +17,7 @@ def evaluate_model(input_features, input_target, input_model, output_predictions
     # Chargement des données
     X_test = pd.read_csv(input_features)
     y_test = pd.read_csv(input_target).squeeze()
-    model = joblib.load(input_model)
+    model = pickle.load(input_model)
 
     # Prédictions
     y_pred = model.predict(X_test)

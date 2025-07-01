@@ -1,8 +1,8 @@
 import pandas as pd
 import os
-import joblib
+import pickle
 import click
-from sklearn.linear_model import Ridge # petit dataset, eviter overfitting
+from sklearn.linear_model import Ridge  # petit dataset, eviter overfitting
 from sklearn.model_selection import GridSearchCV
 
 @click.command()
@@ -14,7 +14,8 @@ def gridsearch(input_features, input_target, output_path):
 
     # Chargement des données
     X_train = pd.read_csv(input_features)
-    y_train = pd.read_csv(input_target).squeeze() 
+    y_train = pd.read_csv(input_target).squeeze()
+
     # Modèle de base
     model = Ridge()
 
@@ -31,9 +32,11 @@ def gridsearch(input_features, input_target, output_path):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     # Sauvegarde des meilleurs paramètres
-    joblib.dump(grid_search.best_params_, output_path)
+    with open(output_path, "wb") as f:
+        pickle.dump(grid_search.best_params_, f)
 
     click.secho(f"Meilleurs paramètres sauvegardés dans : {output_path}")
+    click.secho(f"Params : {grid_search.best_params_}")
 
 if __name__ == "__main__":
     gridsearch()
